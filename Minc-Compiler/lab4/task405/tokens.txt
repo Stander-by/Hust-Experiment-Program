@@ -1,0 +1,129 @@
+; ModuleID = 'test'
+source_filename = "test"
+
+declare i32 @putchar(i32)
+
+declare i32 @getchar()
+
+define i32 @read() {
+entry:
+  %methodCall = call i32 @getchar()
+  br label %condW
+
+condW:                                            ; preds = %doW, %entry
+  %b.0 = phi i32 [ %methodCall, %entry ], [ %methodCall6, %doW ]
+  %a.0 = phi i32 [ 0, %entry ], [ %sub, %doW ]
+  %NE = icmp ne i32 %b.0, 10
+  %condValW = icmp ne i1 %NE, false
+  br i1 %condValW, label %doW, label %ntW
+
+doW:                                              ; preds = %condW
+  %mul = mul i32 %a.0, 10
+  %add = add i32 %mul, %b.0
+  %sub = sub i32 %add, 48
+  %methodCall6 = call i32 @getchar()
+  br label %condW
+
+ntW:                                              ; preds = %condW
+  br label %ret
+
+ret:                                              ; preds = %ntW
+  ret i32 %a.0
+}
+
+define i32 @write(i32 %a) {
+entry:
+  br label %condW
+
+condW:                                            ; preds = %doW, %entry
+  %b.0 = phi i32 [ 1, %entry ], [ %mul, %doW ]
+  %SLE = icmp sle i32 %b.0, %a
+  %condValW = icmp ne i1 %SLE, false
+  br i1 %condValW, label %doW, label %ntW
+
+doW:                                              ; preds = %condW
+  %mul = mul i32 %b.0, 10
+  br label %condW
+
+ntW:                                              ; preds = %condW
+  %sdiv = sdiv i32 %b.0, 10
+  br label %condW7
+
+condW7:                                           ; preds = %doW8, %ntW
+  %c.0 = phi i32 [ 0, %ntW ], [ %add, %doW8 ]
+  %b.1 = phi i32 [ %sdiv, %ntW ], [ %sdiv23, %doW8 ]
+  %a1.0 = phi i32 [ %a, %ntW ], [ %sub, %doW8 ]
+  %SGE = icmp sge i32 %a1.0, 10
+  %condValW11 = icmp ne i1 %SGE, false
+  br i1 %condValW11, label %doW8, label %ntW9
+
+doW8:                                             ; preds = %condW7
+  %sdiv15 = sdiv i32 %a1.0, %b.1
+  %mul20 = mul i32 %sdiv15, %b.1
+  %sub = sub i32 %a1.0, %mul20
+  %sdiv23 = sdiv i32 %b.1, 10
+  %add = add i32 %sdiv15, 48
+  %methodCall = call i32 @putchar(i32 %add)
+  br label %condW7
+
+ntW9:                                             ; preds = %condW7
+  %add28 = add i32 %a1.0, 48
+  %methodCall29 = call i32 @putchar(i32 %add28)
+  %methodCall30 = call i32 @putchar(i32 10)
+  br label %ret
+
+ret:                                              ; preds = %ntW9
+  ret i32 %a1.0
+}
+
+define i32 @fibo(i32 %a) {
+entry:
+  %EQ = icmp eq i32 %a, 1
+  %EQ3 = icmp eq i32 %a, 2
+  %or = or i1 %EQ, %EQ3
+  %condValI = icmp ne i1 %or, false
+  br i1 %condValI, label %thenI, label %contI
+
+thenI:                                            ; preds = %entry
+  br label %ret
+
+contI:                                            ; preds = %ret, %entry
+  br label %ret4
+
+ret:                                              ; preds = %thenI
+  ret i32 1
+  br label %contI
+
+ret4:                                             ; preds = %contI
+  %sub = sub i32 %a, 1
+  %methodCall = call i32 @fibo(i32 %sub)
+  %sub7 = sub i32 %a, 2
+  %methodCall8 = call i32 @fibo(i32 %sub7)
+  %add = add i32 %methodCall, %methodCall8
+  ret i32 %add
+}
+
+define i32 @main() {
+entry:
+  %methodCall = call i32 @read()
+  br label %condW
+
+condW:                                            ; preds = %doW, %entry
+  %i.0 = phi i32 [ 1, %entry ], [ %add, %doW ]
+  %n.0 = phi i32 [ 0, %entry ], [ %methodCall5, %doW ]
+  %SLE = icmp sle i32 %i.0, %methodCall
+  %condValW = icmp ne i1 %SLE, false
+  br i1 %condValW, label %doW, label %ntW
+
+doW:                                              ; preds = %condW
+  %methodCall5 = call i32 @fibo(i32 %i.0)
+  %methodCall7 = call i32 @write(i32 %methodCall5)
+  %add = add i32 %i.0, 1
+  br label %condW
+
+ntW:                                              ; preds = %condW
+  br label %ret
+
+ret:                                              ; preds = %ntW
+  ret i32 0
+}
