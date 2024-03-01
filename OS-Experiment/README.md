@@ -13,7 +13,7 @@ Experiment of OS in HUST-CSE
 - Linux下实现生产者消费者同步控制
 - Windows下并发画圆画方
 ## Windows下模拟FIFO或LRU淘汰算法
-![LRU-FIFO缺页状况](/pic/effect.png "effect")
+![LRU-FIFO缺页状况](./pic/effect.png "effect")
 ## 编写Linux驱动程序并测试
 - `sudo apt install libelf-dev`
 - 编写驱动程序`code.c`
